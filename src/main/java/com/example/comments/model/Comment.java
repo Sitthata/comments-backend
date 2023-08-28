@@ -2,39 +2,49 @@ package com.example.comments.model;
 
 import com.example.comments.Utils.TimeAgoUtility;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table
 public class Comment {
     @Id
-    @SequenceGenerator(
+    @SequenceGenerator (
             name = "comment_sequence",
             sequenceName = "comment_sequence",
             allocationSize = 1
     )
-    @GeneratedValue(
+    @GeneratedValue (
             strategy = GenerationType.SEQUENCE,
             generator = "comment_sequence"
     )
+
     private Long id;
     private String content;
     private LocalDateTime createdAt;
     private Integer score;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn (
+            name = "user_id",
+            nullable = false
+    )
+
     private User user;
+
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentComment")
+    @OneToMany (
+            cascade = CascadeType.ALL,
+            mappedBy = "parentComment"
+    )
+
     private List<Comment> replies;
 
-    @JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
@@ -97,6 +107,7 @@ public class Comment {
         this.user = user;
     }
 
+    @JsonIgnoreProperties("replies")
     public List<Comment> getReplies() {
         return replies;
     }
@@ -104,6 +115,7 @@ public class Comment {
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
     }
+
     @JsonIgnore
     public Comment getParentComment() {
         return parentComment;
@@ -129,5 +141,4 @@ public class Comment {
         sb.append('}');
         return sb.toString();
     }
-
 }

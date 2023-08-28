@@ -1,14 +1,15 @@
 package com.example.comments.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@JsonIdentityReference(alwaysAsId = false)
 @Table
 public class User {
     @Id
@@ -20,7 +21,8 @@ public class User {
         this.username = username;
     }
 
-    public User() {}
+    public User() {
+    }
 
     public Long getId() {
         return id;

@@ -42,7 +42,7 @@ public class SecurityConfig {
                     0,
                     user1,
                     null,
-                    null
+                    firstComment
             );
             Comment fourthComment = new Comment(
                     "This is the fourth comment",

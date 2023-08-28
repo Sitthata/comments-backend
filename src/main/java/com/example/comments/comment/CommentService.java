@@ -1,5 +1,7 @@
 package com.example.comments.comment;
 
+import com.example.comments.model.dto.CommentDTO;
+import com.example.comments.model.dto.DtoConverter;
 import com.example.comments.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
     @GetMapping
-    public List<Comment> getComment() {
-        return commentRepository.findAll();
+    public List<CommentDTO> getComment() {
+        List<Comment> comments = commentRepository.findByParentCommentIsNull();
+        return DtoConverter.toDtoList(comments);
     }
 
     public void addComment(Comment comment) {
