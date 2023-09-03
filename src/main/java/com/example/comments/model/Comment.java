@@ -49,9 +49,8 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    public Comment(String content, LocalDateTime createdAt, Integer score, User user, List<Comment> replies, Comment parentComment) {
+    public Comment(String content, Integer score, User user, List<Comment> replies, Comment parentComment) {
         this.content = content;
-        this.createdAt = createdAt;
         this.score = score;
         this.user = user;
         this.replies = replies;
@@ -76,8 +75,11 @@ public class Comment {
     public void setContent(String content) {
         this.content = content;
     }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-    @JsonIgnore
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -85,10 +87,6 @@ public class Comment {
     @JsonProperty("createdAt")
     public String getFormattedCreatedAt() {
         return TimeAgoUtility.getTimeAgo(this.createdAt);
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Integer getScore() {

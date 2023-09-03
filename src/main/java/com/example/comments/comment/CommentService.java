@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -17,13 +18,21 @@ public class CommentService {
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
-    @GetMapping
     public List<CommentDTO> getComment() {
         List<Comment> comments = commentRepository.findByParentCommentIsNull();
         return DtoConverter.toDtoList(comments);
     }
 
-    public void addComment(Comment comment) {
-        commentRepository.save(comment);
+    public Comment addComment(Comment comment) {
+        // If it's a reply, find the parent comment
+        if (comment.getParentComment() != null) {
+            Comment parentComment = commentRepository.findById(comment.getParentComment().getId()).orElse(null);
+            comment.setParentComment(parentComment);
+            if (parentComment == null) {
+                System.out.println("Parent Comment not found");
+                return null;
+            }
+        }
+        return commentRepository.save(comment);
     }
 }

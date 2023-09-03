@@ -22,7 +22,6 @@ public class SecurityConfig {
             userRepository.save(user1);
             Comment firstComment = new Comment(
                     "This is the first comment",
-                    now(),
                     0,
                     user1,
                     null,
@@ -30,7 +29,6 @@ public class SecurityConfig {
             );
             Comment secondComment = new Comment(
                     "This is the second comment",
-                    now(),
                     0,
                     user1,
                     null,
@@ -38,15 +36,13 @@ public class SecurityConfig {
             );
             Comment thirdComment = new Comment(
                     "This is the third comment",
-                    now(),
                     0,
                     user1,
                     null,
-                    firstComment
+                    null
             );
             Comment fourthComment = new Comment(
                     "This is the fourth comment",
-                    now(),
                     0,
                     user1,
                     null,
